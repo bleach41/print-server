@@ -34,7 +34,7 @@ Este es un servidor de impresi√≥n desarrollado en Python que permite imprimir c√
 
 1. Clonar el repositorio:
 ```bash
-git clone [URL_DEL_REPOSITORIO]
+git clone origin https://github.com/bleach41/print-server 
 cd print-server/python
 ```
 
