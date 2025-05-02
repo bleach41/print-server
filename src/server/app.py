@@ -46,6 +46,9 @@ except ImportError as e:
 app = Flask(__name__)
 CORS(app)
 
+# Variable global para la interfaz gráfica
+gui = None
+
 logger.info("Iniciando servidor de impresión...")
 logger.info("El servidor estará disponible en: http://localhost:3001")
 
@@ -89,17 +92,26 @@ def print_code():
 
         if success:
             logger.info("Impresión exitosa: %s", code)
+            # Registrar en el historial
+            if gui and hasattr(gui, 'add_to_history'):
+                gui.add_to_history(code, "✅ Exitoso")
             return jsonify({
                 'success': True,
                 'message': f'Código {code} enviado a imprimir con QR'
             })
         else:
             logger.error("Error durante la impresión")
+            # Registrar error en el historial
+            if gui and hasattr(gui, 'add_to_history'):
+                gui.add_to_history(code, "❌ Error")
             return jsonify({'error': 'Error al imprimir'}), 500
 
     except Exception as e:
         error_msg = f"Error al imprimir: {str(e)}"
         logger.error(error_msg)
+        # Registrar error en el historial
+        if gui and hasattr(gui, 'add_to_history'):
+            gui.add_to_history(data.get('code', 'N/A'), f"❌ {str(e)}")
         return jsonify({'error': error_msg}), 500
 
 
