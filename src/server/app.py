@@ -153,6 +153,10 @@ def list_printers():
 
 if __name__ == '__main__':
     try:
+        app = Flask(__name__)
+        CORS(app)
+
+        # Crear y mostrar la ventana principal
         gui = PrintServerGUI(app)
         gui.run()
     except Exception as e:
