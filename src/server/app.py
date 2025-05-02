@@ -46,8 +46,7 @@ except ImportError as e:
 app = Flask(__name__)
 CORS(app)
 
-# Variable global para la interfaz gráfica
-gui = None
+gui = PrintServerGUI(app)
 
 logger.info("Iniciando servidor de impresión...")
 logger.info("El servidor estará disponible en: http://localhost:3001")
@@ -165,11 +164,6 @@ def list_printers():
 
 if __name__ == '__main__':
     try:
-        app = Flask(__name__)
-        CORS(app)
-
-        # Crear y mostrar la ventana principal
-        gui = PrintServerGUI(app)
         gui.run()
     except Exception as e:
         logger.error("Error al iniciar el servidor:")
