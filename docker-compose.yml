@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  print-server:
+    build: .
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+    # Necesario para acceder a las impresoras del host
+    volumes:
+      - type: bind
+        source: C:\Windows\System32\spool\PRINTERS
+        target: C:\Windows\System32\spool\PRINTERS
+    # Usar la red del host para acceder a las impresoras locales
+    network_mode: host 
