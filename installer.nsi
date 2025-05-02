@@ -3,7 +3,7 @@
 !define EXECNAME "app"
 !define COMPANYNAME "TECOPOS"
 !define DESCRIPTION "Servidor de impresión para impresoras térmicas"
-!define VERSIONMAJOR 1
+!define VERSIONMAJOR 2
 !define VERSIONMINOR 0
 !define VERSIONBUILD 0
 
@@ -38,6 +38,9 @@ Section "Programa Principal" SecMain
     ; Archivos principales
     File "dist\${EXECNAME}.exe"
     
+    ; Crear carpeta de logs
+    CreateDirectory "$INSTDIR\logs"
+    
     ; Crear accesos directos
     CreateDirectory "$SMPROGRAMS\${COMPANYNAME}"
     CreateShortCut "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk" "$INSTDIR\${EXECNAME}.exe"
@@ -67,6 +70,9 @@ Section "Uninstall"
     Delete "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk"
     Delete "$DESKTOP\${APPNAME}.lnk"
     RMDir "$SMPROGRAMS\${COMPANYNAME}"
+    
+    ; Eliminar carpeta de logs y su contenido
+    RMDir /r "$INSTDIR\logs"
     
     ; Eliminar directorio de instalación
     RMDir "$INSTDIR"

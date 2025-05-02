@@ -1,157 +1,115 @@
-# Servidor de Impresión
+# Print Server / Servidor de Impresión
 
-Este es un servidor de impresión desarrollado en Python que permite imprimir códigos QR y texto a través de una API REST.
+## Español
 
-## Características
+### Descripción
+Servidor de impresión para impresoras térmicas Munbyn, con interfaz gráfica moderna, historial de impresiones y API REST para integración.
 
-- API REST para imprimir códigos QR y texto
-- Soporte para impresoras térmicas Munbyn
-- Verificación de estado de impresora
-- Listado de impresoras disponibles
-- CORS habilitado para integración con aplicaciones web
-- Instalador Windows profesional
-- Inicio automático con Windows (opcional)
-
-## Requisitos
-
-### Para usuarios finales:
+### Requisitos
 - Windows 10/11
-- Impresora térmica Munbyn compatible instalada
+- Impresora térmica Munbyn compatible
+- (Para desarrolladores) Python 3.x, NSIS, PyInstaller
 
-### Para desarrolladores:
-- Python 3.x
-- Windows (debido al uso de win32print)
-- NSIS (para crear el instalador)
+### Instalación (Usuarios Finales)
+1. Descarga `PrintServer-Setup.exe` (versión 2.0.0)
+2. Ejecuta el instalador y sigue las instrucciones
+3. El programa se instalará en `C:\Program Files\TECOPOS\Print Server\`
+4. Se crearán accesos directos en el escritorio y menú inicio
+5. El servidor se iniciará automáticamente con Windows
+6. Los logs e historial se guardan en `C:\Program Files\TECOPOS\Print Server\logs`
 
-## Instalación
+### Desinstalación
+- Usa "Agregar o quitar programas" de Windows
+- Todos los archivos, logs e historial se eliminarán (haz copia si los necesitas)
 
-### Para Usuarios Finales:
+### Uso
+- La interfaz gráfica permite:
+  - Verificar estado de la impresora
+  - Listar impresoras
+  - Ver y exportar historial (próximamente a Excel)
+  - Ver información del servidor
+  - Abrir logs
+  - Reiniciar el servidor
 
-1. Descargar `PrintServer-Setup.exe`
-2. Ejecutar el instalador
-3. Seguir las instrucciones en pantalla
-4. La aplicación se iniciará automáticamente al finalizar la instalación
+### API REST
+- POST `/print` para imprimir (ver ejemplo más abajo)
+- GET `/status` para estado de impresora
+- GET `/printers` para listar impresoras
 
-El programa se instalará en:
-- Programa: `C:\Program Files\TECOPOS\Print Server\`
-- Acceso directo: Escritorio y Menú Inicio
-- Inicio automático con Windows (opcional)
-
-Para desinstalar:
-1. Ir a "Agregar o quitar programas"
-2. Buscar "Print Server"
-3. Hacer clic en "Desinstalar"
-
-### Para Desarrolladores:
-
-1. Clonar el repositorio:
-```bash
-git clone [URL_DEL_REPOSITORIO]
-cd print-server/python
-```
-
-2. Instalar dependencias:
-```bash
-pip install -r requirements.txt
-```
-
-3. Iniciar el servidor:
-```bash
-python src/server/app.py
-```
-
-## Construir el Instalador (Para desarrolladores)
-
-1. Instalar dependencias de desarrollo:
-```bash
-pip install -r requirements.txt
-pip install pyinstaller
-winget install NSIS.NSIS
-```
-
-2. Generar el ejecutable:
-```bash
-python build.py
-```
-
-3. Crear el instalador:
-```bash
-makensis installer.nsi
-```
-
-El instalador `PrintServer-Setup.exe` se generará en el directorio actual.
-
-## API Endpoints
-
-### POST /print
-Envía código para imprimir
-
-Ejemplo de solicitud:
+### Ejemplo de solicitud de impresión
 ```json
 {
-    "code": "ABC123",
-    "productId": "78954",
-    "customer": "Juan Pérez",
-    "total": "125.00",
-    "notes": "Notas adicionales"
+  "code": "2024100101",
+  "productId": "P001",
+  "customer": "Juan Pérez",
+  "total": 123.45,
+  "notes": "Entrega urgente"
 }
 ```
 
-Respuesta exitosa:
+### Desarrollo y construcción del instalador
+1. Clona el repositorio
+2. Instala dependencias: `pip install -r requirements.txt`
+3. Ejecuta: `python build.py`
+4. Crea el instalador: `makensis installer.nsi`
+
+---
+
+## English
+
+### Description
+Print server for Munbyn thermal printers, with a modern GUI, print history, and REST API for integration.
+
+### Requirements
+- Windows 10/11
+- Compatible Munbyn thermal printer
+- (For developers) Python 3.x, NSIS, PyInstaller
+
+### Installation (End Users)
+1. Download `PrintServer-Setup.exe` (version 2.0.0)
+2. Run the installer and follow the instructions
+3. The program will be installed in `C:\Program Files\TECOPOS\Print Server\`
+4. Shortcuts will be created on the desktop and start menu
+5. The server will start automatically with Windows
+6. Logs and history are saved in `C:\Program Files\TECOPOS\Print Server\logs`
+
+### Uninstallation
+- Use Windows "Add or Remove Programs"
+- All files, logs, and history will be deleted (make a backup if needed)
+
+### Usage
+- The graphical interface allows:
+  - Check printer status
+  - List printers
+  - View and export history (Excel export coming soon)
+  - View server information
+  - Open logs
+  - Restart the server
+
+### REST API
+- POST `/print` to print (see example below)
+- GET `/status` for printer status
+- GET `/printers` to list printers
+
+### Print request example
 ```json
 {
-    "success": true,
-    "message": "Código ABC123 enviado a imprimir con QR"
+  "code": "2024100101",
+  "productId": "P001",
+  "customer": "Juan Pérez",
+  "total": 123.45,
+  "notes": "Urgent delivery"
 }
 ```
 
-### GET /status
-Verifica el estado de la impresora
+### Development and installer build
+1. Clone the repository
+2. Install dependencies: `pip install -r requirements.txt`
+3. Run: `python build.py`
+4. Create the installer: `makensis installer.nsi`
 
-Respuesta exitosa:
-```json
-{
-    "status": "ready",
-    "message": "Impresora conectada y lista"
-}
-```
+---
 
-### GET /printers
-Lista las impresoras disponibles
-
-Respuesta exitosa:
-```json
-{
-    "success": true,
-    "printers": [
-        {
-            "name": "Munbyn Printer",
-            "port": "USB001",
-            "driver": "Generic / Text Only"
-        }
-    ]
-}
-```
-
-## Estructura del Proyecto
-
-```
-python/
-├── src/
-│   ├── server/
-│   │   └── app.py      # Servidor principal
-│   └── printer/
-│       └── printer.py   # Módulo de impresión
-├── build.py            # Script de construcción
-├── requirements.txt    # Dependencias del proyecto
-└── README.md          # Documentación
-```
-
-## Notas importantes
-
-1. El ejecutable debe ejecutarse con permisos de administrador la primera vez
-2. Se recomienda agregar el ejecutable a las excepciones del antivirus
-3. El servidor se iniciará automáticamente al ejecutar el programa
-4. Para detener el servidor, cerrar la ventana del programa
-5. Los mensajes de estado y errores se mostrarán en la consola
-6. La impresora Munbyn debe estar instalada y configurada en Windows antes de ejecutar el programa 
+**Contacto / Contact:**
+- bleach41
+- ftonyalejandrofr@gmail.com 

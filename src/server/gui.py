@@ -1,6 +1,7 @@
 import flask.cli
 import logging
 import os
+import sys
 import threading
 import win32print
 from datetime import datetime
@@ -11,8 +12,17 @@ import webbrowser
 import psutil
 import json
 
-# Configurar logging
-log_dir = os.path.join(os.path.expanduser("~"), "PrintServer", "logs")
+# Determinar la carpeta de instalación (compatible con PyInstaller)
+
+
+def get_install_dir():
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.dirname(sys.executable)
+    return os.path.dirname(os.path.abspath(__file__))
+
+
+install_dir = get_install_dir()
+log_dir = os.path.join(install_dir, "logs")
 os.makedirs(log_dir, exist_ok=True)
 
 log_file = os.path.join(
