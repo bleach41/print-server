@@ -1,12 +1,21 @@
-import win32print
-import qrcode
-import tempfile
 import os
-from PIL import Image, ImageWin, ImageFont, ImageDraw
-import win32ui
-import win32con
-import win32gui
-import time
+import traceback
+
+try:
+    import win32print
+    import qrcode
+    import tempfile
+    from PIL import Image, ImageWin, ImageFont, ImageDraw
+    import win32ui
+    import win32con
+    import win32gui
+    import time
+    print("Todas las dependencias importadas correctamente")
+except ImportError as e:
+    print(f"Error al importar dependencias: {str(e)}")
+    print("Traceback completo:")
+    traceback.print_exc()
+    raise
 
 
 def generate_qr(data, size=5):

@@ -25,3 +25,14 @@ env/
 # Local development settings
 .env
 .env.local 
+
+# QR codes
+src/qr_codes/*
+
+# Build files
+build/
+*.spec
+*.spec.py
+*.spec.pyc
+*.spec.pyo
+*.spec.pyd
