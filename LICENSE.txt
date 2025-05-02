@@ -1,0 +1,26 @@
+Acuerdo de Licencia de Usuario Final (EULA)
+
+Por favor, lea cuidadosamente este Acuerdo de Licencia de Usuario Final ("EULA") antes de instalar o utilizar Print Server ("el Software").
+
+1. LICENCIA
+Bleach41 le otorga una licencia no exclusiva para instalar y utilizar el Software en un único equipo.
+
+2. RESTRICCIONES
+Usted no puede:
+- Modificar, adaptar o traducir el Software
+- Descompilar, realizar ingeniería inversa o desensamblar el Software
+- Distribuir o transferir el Software a terceros
+
+3. PROPIEDAD
+El Software es propiedad de Bleach41 y está protegido por las leyes de propiedad intelectual.
+
+4. GARANTÍA LIMITADA
+El Software se proporciona "tal cual" sin garantía de ningún tipo.
+
+5. LIMITACIÓN DE RESPONSABILIDAD
+En ningún caso Bleach41 será responsable por daños directos, indirectos, incidentales o consecuentes.
+
+6. TERMINACIÓN
+Esta licencia termina automáticamente si incumple cualquiera de sus términos.
+
+Al instalar el Software, usted acepta los términos de este EULA. 

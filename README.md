@@ -9,32 +9,44 @@ Este es un servidor de impresión desarrollado en Python que permite imprimir c�
 - Verificación de estado de impresora
 - Listado de impresoras disponibles
 - CORS habilitado para integración con aplicaciones web
-- Ejecutable Windows para instalación simple
+- Instalador Windows profesional
+- Inicio automático con Windows (opcional)
 
 ## Requisitos
 
-### Para instalación directa:
-- Python 3.x
-- Windows (debido al uso de win32print)
-- Impresora térmica Munbyn compatible
-
-### Para el ejecutable:
+### Para usuarios finales:
 - Windows 10/11
 - Impresora térmica Munbyn compatible instalada
 
+### Para desarrolladores:
+- Python 3.x
+- Windows (debido al uso de win32print)
+- NSIS (para crear el instalador)
+
 ## Instalación
 
-### Usando el Ejecutable (Método recomendado):
+### Para Usuarios Finales:
 
-1. Descargar el archivo `app.exe` de la carpeta `dist`
-2. Hacer doble clic en el ejecutable
-3. El servidor se iniciará automáticamente en http://localhost:3001
+1. Descargar `PrintServer-Setup.exe`
+2. Ejecutar el instalador
+3. Seguir las instrucciones en pantalla
+4. La aplicación se iniciará automáticamente al finalizar la instalación
 
-### Instalación Manual (Para desarrolladores):
+El programa se instalará en:
+- Programa: `C:\Program Files\TECOPOS\Print Server\`
+- Acceso directo: Escritorio y Menú Inicio
+- Inicio automático con Windows (opcional)
+
+Para desinstalar:
+1. Ir a "Agregar o quitar programas"
+2. Buscar "Print Server"
+3. Hacer clic en "Desinstalar"
+
+### Para Desarrolladores:
 
 1. Clonar el repositorio:
 ```bash
-git clone origin https://github.com/bleach41/print-server 
+git clone [URL_DEL_REPOSITORIO]
 cd print-server/python
 ```
 
@@ -48,22 +60,26 @@ pip install -r requirements.txt
 python src/server/app.py
 ```
 
-## Construir el Ejecutable (Para desarrolladores)
-
-Para generar un nuevo ejecutable:
+## Construir el Instalador (Para desarrolladores)
 
 1. Instalar dependencias de desarrollo:
 ```bash
 pip install -r requirements.txt
 pip install pyinstaller
+winget install NSIS.NSIS
 ```
 
-2. Ejecutar el script de construcción:
+2. Generar el ejecutable:
 ```bash
 python build.py
 ```
 
-El ejecutable se generará automáticamente en la carpeta `dist`.
+3. Crear el instalador:
+```bash
+makensis installer.nsi
+```
+
+El instalador `PrintServer-Setup.exe` se generará en el directorio actual.
 
 ## API Endpoints
 
