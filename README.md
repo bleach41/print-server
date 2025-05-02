@@ -16,7 +16,7 @@ Servidor de impresión para impresoras térmicas Munbyn, con interfaz gráfica m
 3. El programa se instalará en `C:\Program Files\TECOPOS\Print Server\`
 4. Se crearán accesos directos en el escritorio y menú inicio
 5. El servidor se iniciará automáticamente con Windows
-6. Los logs e historial se guardan en `C:\Program Files\TECOPOS\Print Server\logs`
+6. **Los logs e historial se guardan en `%APPDATA%\TECOPOS\PrintServer\logs`** (por ejemplo: `C:\Users\[usuario]\AppData\Roaming\TECOPOS\PrintServer\logs`)
 
 ### Desinstalación
 - Usa "Agregar o quitar programas" de Windows
@@ -71,7 +71,7 @@ Print server for Munbyn thermal printers, with a modern GUI, print history, and 
 3. The program will be installed in `C:\Program Files\TECOPOS\Print Server\`
 4. Shortcuts will be created on the desktop and start menu
 5. The server will start automatically with Windows
-6. Logs and history are saved in `C:\Program Files\TECOPOS\Print Server\logs`
+6. **Logs and history are saved in `%APPDATA%\TECOPOS\PrintServer\logs`** (e.g. `C:\Users\[user]\AppData\Roaming\TECOPOS\PrintServer\logs`)
 
 ### Uninstallation
 - Use Windows "Add or Remove Programs"

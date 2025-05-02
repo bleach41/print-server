@@ -12,18 +12,19 @@ import webbrowser
 import psutil
 import json
 
-# Determinar la carpeta de instalación (compatible con PyInstaller)
+# Carpeta de logs e historial en %APPDATA% (usuario)
 
 
-def get_install_dir():
-    if hasattr(sys, '_MEIPASS'):
-        return os.path.dirname(sys.executable)
-    return os.path.dirname(os.path.abspath(__file__))
+def get_user_log_dir():
+    appdata = os.environ.get('APPDATA')
+    if not appdata:
+        appdata = os.path.expanduser('~')
+    log_dir = os.path.join(appdata, 'TECOPOS', 'PrintServer', 'logs')
+    os.makedirs(log_dir, exist_ok=True)
+    return log_dir
 
 
-install_dir = get_install_dir()
-log_dir = os.path.join(install_dir, "logs")
-os.makedirs(log_dir, exist_ok=True)
+log_dir = get_user_log_dir()
 
 log_file = os.path.join(
     log_dir, f"print_server_{datetime.now().strftime('%Y%m%d')}.log")
