@@ -1,6 +1,8 @@
 import os
 import sys
 import traceback
+import logging
+from datetime import datetime
 
 try:
     import win32print
@@ -12,6 +14,7 @@ try:
     import win32ui
     import win32con
     import win32gui
+    from gui import PrintServerGUI, logger
     print("Todas las dependencias importadas correctamente")
 except ImportError as e:
     print(f"Error al importar dependencias: {str(e)}")
@@ -25,17 +28,17 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 src_dir = os.path.dirname(current_dir)
 sys.path.insert(0, src_dir)
 
-print("Directorio actual:", os.getcwd())
-print("Directorio src:", src_dir)
-print("Python path:", sys.path)
+logger.info("Directorio actual: %s", os.getcwd())
+logger.info("Directorio src: %s", src_dir)
+logger.info("Python path: %s", sys.path)
 
 # Importar el módulo printer
 try:
     from printer.printer import test_direct_print
-    print("Módulo printer importado correctamente")
+    logger.info("Módulo printer importado correctamente")
 except ImportError as e:
-    print(f"Error: No se pudo importar el módulo printer - {str(e)}")
-    print("Traceback completo:")
+    logger.error("Error: No se pudo importar el módulo printer - %s", str(e))
+    logger.error("Traceback completo:")
     traceback.print_exc()
     input("Presione Enter para salir...")
     sys.exit(1)
@@ -43,18 +46,28 @@ except ImportError as e:
 app = Flask(__name__)
 CORS(app)
 
-print("Iniciando servidor de impresión...")
-print("El servidor estará disponible en: http://localhost:3001")
+logger.info("Iniciando servidor de impresión...")
+logger.info("El servidor estará disponible en: http://localhost:3001")
+
+
+@app.route('/shutdown', methods=['GET'])
+def shutdown():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('No se ejecuta con el servidor de desarrollo')
+    func()
+    return 'Servidor detenido...'
 
 
 @app.route('/print', methods=['POST'])
 def print_code():
     try:
         data = request.get_json()
-        print(f"Solicitud de impresión recibida: {data.get('code', '')}")
+        logger.info("Solicitud de impresión recibida: %s",
+                    data.get('code', ''))
 
         if not data or 'code' not in data:
-            print("Error: No se proporcionó el código")
+            logger.error("Error: No se proporcionó el código")
             return jsonify({'error': 'No se proporcionó el código'}), 400
 
         code = data['code']
@@ -71,22 +84,22 @@ def print_code():
         text_to_print = f"""CÓDIGO: {code}
 {additional_info}"""
 
-        print("Enviando a imprimir...")
+        logger.info("Enviando a imprimir...")
         success = test_direct_print(text_to_print)
 
         if success:
-            print(f"Impresión exitosa: {code}")
+            logger.info("Impresión exitosa: %s", code)
             return jsonify({
                 'success': True,
                 'message': f'Código {code} enviado a imprimir con QR'
             })
         else:
-            print("Error durante la impresión")
+            logger.error("Error durante la impresión")
             return jsonify({'error': 'Error al imprimir'}), 500
 
     except Exception as e:
         error_msg = f"Error al imprimir: {str(e)}"
-        print(error_msg)
+        logger.error(error_msg)
         return jsonify({'error': error_msg}), 500
 
 
@@ -99,15 +112,15 @@ def printer_status():
             "Munbyn" in printer['pPrinterName'] for printer in printers)
 
         if printer_found:
-            print("Verificación de estado: Impresora conectada")
+            logger.info("Verificación de estado: Impresora conectada")
             return jsonify({'status': 'ready', 'message': 'Impresora conectada y lista'})
         else:
-            print("Verificación de estado: Impresora no encontrada")
+            logger.warning("Verificación de estado: Impresora no encontrada")
             return jsonify({'status': 'error', 'message': 'Impresora no encontrada'}), 404
 
     except Exception as e:
         error_msg = f"Error al verificar estado: {str(e)}"
-        print(error_msg)
+        logger.error(error_msg)
         return jsonify({'status': 'error', 'message': error_msg}), 500
 
 
@@ -125,7 +138,7 @@ def list_printers():
                 'driver': printer['pDriverName']
             }
             printer_list.append(printer_info)
-            print(f"Impresora encontrada: {printer['pPrinterName']}")
+            logger.info("Impresora encontrada: %s", printer['pPrinterName'])
 
         return jsonify({
             'success': True,
@@ -134,18 +147,17 @@ def list_printers():
 
     except Exception as e:
         error_msg = f"Error al listar impresoras: {str(e)}"
-        print(error_msg)
+        logger.error(error_msg)
         return jsonify({'error': error_msg}), 500
 
 
 if __name__ == '__main__':
     try:
-        print("Servidor iniciado en http://localhost:3001")
-        print("Esperando solicitudes de impresión...")
-        app.run(host='0.0.0.0', port=3001)
+        gui = PrintServerGUI(app)
+        gui.run()
     except Exception as e:
-        print("Error al iniciar el servidor:")
-        print(str(e))
-        print("Traceback completo:")
+        logger.error("Error al iniciar el servidor:")
+        logger.error(str(e))
+        logger.error("Traceback completo:")
         traceback.print_exc()
         input("Presione Enter para salir...")

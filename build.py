@@ -21,6 +21,7 @@ cmd = [
     "PyInstaller",
     "--name=app",
     "--onefile",
+    "--windowed",
     "--add-data=src/printer;printer",
     "--hidden-import=win32print",
     "--hidden-import=win32gui",

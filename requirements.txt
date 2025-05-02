@@ -1,6 +1,7 @@
+Flask==3.0.2
+Flask-CORS==4.0.0
+pywin32==306
 qrcode==7.4.2
 Pillow==10.2.0
-pywin32==306
-flask==3.0.2
-flask-cors==4.0.0
-pyinstaller==6.3.0 
+pystray==0.19.5
+requests==2.31.0 
