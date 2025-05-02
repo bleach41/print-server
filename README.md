@@ -24,13 +24,13 @@ Este es un servidor de impresión desarrollado en Python que permite imprimir c�
 
 ## Instalación
 
-### Usando el Ejecutable (Método más simple):
+### Usando el Ejecutable (Método recomendado):
 
 1. Descargar el archivo `app.exe` de la carpeta `dist`
 2. Hacer doble clic en el ejecutable
 3. El servidor se iniciará automáticamente en http://localhost:3001
 
-### Instalación Manual:
+### Instalación Manual (Para desarrolladores):
 
 1. Clonar el repositorio:
 ```bash
@@ -48,24 +48,24 @@ pip install -r requirements.txt
 python src/server/app.py
 ```
 
-## Construir el Ejecutable
+## Construir el Ejecutable (Para desarrolladores)
 
-Si deseas construir el ejecutable tú mismo:
+Para generar un nuevo ejecutable:
 
-1. Asegúrate de tener todas las dependencias instaladas:
+1. Instalar dependencias de desarrollo:
 ```bash
 pip install -r requirements.txt
 pip install pyinstaller
 ```
 
-2. Ejecutar PyInstaller:
+2. Ejecutar el script de construcción:
 ```bash
-pyinstaller --onefile --add-data="src/printer;printer" --hidden-import=win32print --hidden-import=win32gui --hidden-import=win32api --hidden-import=win32con --hidden-import=win32ui --hidden-import=flask --hidden-import=flask_cors --hidden-import=qrcode --hidden-import=PIL --hidden-import=PIL._imaging --hidden-import=PIL.Image --hidden-import=PIL.ImageWin --hidden-import=PIL.ImageFont --hidden-import=PIL.ImageDraw src/server/app.py
+python build.py
 ```
 
-El ejecutable se generará en la carpeta `dist`.
+El ejecutable se generará automáticamente en la carpeta `dist`.
 
-## Endpoints
+## API Endpoints
 
 ### POST /print
 Envía código para imprimir
@@ -81,11 +81,41 @@ Ejemplo de solicitud:
 }
 ```
 
+Respuesta exitosa:
+```json
+{
+    "success": true,
+    "message": "Código ABC123 enviado a imprimir con QR"
+}
+```
+
 ### GET /status
 Verifica el estado de la impresora
 
+Respuesta exitosa:
+```json
+{
+    "status": "ready",
+    "message": "Impresora conectada y lista"
+}
+```
+
 ### GET /printers
 Lista las impresoras disponibles
+
+Respuesta exitosa:
+```json
+{
+    "success": true,
+    "printers": [
+        {
+            "name": "Munbyn Printer",
+            "port": "USB001",
+            "driver": "Generic / Text Only"
+        }
+    ]
+}
+```
 
 ## Estructura del Proyecto
 
@@ -93,12 +123,12 @@ Lista las impresoras disponibles
 python/
 ├── src/
 │   ├── server/
-│   │   └── app.py
+│   │   └── app.py      # Servidor principal
 │   └── printer/
-│       └── printer.py
-├── build.py
-├── requirements.txt
-└── README.md
+│       └── printer.py   # Módulo de impresión
+├── build.py            # Script de construcción
+├── requirements.txt    # Dependencias del proyecto
+└── README.md          # Documentación
 ```
 
 ## Notas importantes
